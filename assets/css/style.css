@@ -1,0 +1,44 @@
+/*GENERAL*/
+body {
+	font-family: 'Shadows Into Light', cursive;
+	overflow: auto;
+	text-align: center;
+	/*width: 100%;*/
+	background: url("https://www.conncoll.edu/ccacad/zimmer/GFP-ww/images/brainbow1.jpg");
+}
+* {
+	box-sizing: content-box;
+}
+.main-container {
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+	margin-left: 200px;
+	margin-right: 200px;
+	background-color: yellow;
+	/*overflow: auto;*/
+}
+/*START SCREEN*/
+/*GAME SCREEN*/
+/*END SCREEN*/
+h1 {
+	color: lightgreen;
+}
+h3 {
+	font-size: 16px;
+	display: inline-block;
+}
+.btn-circle {
+	width: 15px;
+	height: 10px;
+	padding: 3px 0;
+	font-size: 6px;
+	border-radius: 7.5px;
+}
+.btn-circle {
+	display: inline-block;
+}
+.start-over {
+	margin-bottom: 10px;
+}
