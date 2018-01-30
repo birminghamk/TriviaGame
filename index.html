@@ -40,7 +40,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="btn-group">
-				 			<button class="btn btn-default btn-lg" type="button">
+				 			<button class="btn btn-default btn-lg start" type="button">
 				    		Start
 				 			</button>
 						</div>
@@ -49,36 +49,20 @@
 			</section> <!-- END START SCREEN -->
 
 
-			<section class="gameScreeen">
+			<section class="gameScreen">
 				<div class=row>
 					<div class="col-md-12">
-						<h2 class= "timeTracker" id="counter">Time Remaining: </h2>
+						<h2 class= "timeTracker">Time Remaining: </h2><span id="counter"></span>
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="col-md-12">
-						<h2>Question 1</h2>
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-12">
-								<button type="button" class="btn btn-info btn-circle"><i class="glyphicon glyphicon-asterisk"></i></button>
-
-								<h3>Answer 1</h3>
-						
-								<button type="button" class="btn btn-info btn-circle"><i class="glyphicon glyphicon-asterisk"></i></button>
-
-								<h3>Answer 2</h3>
-						
-								<button type="button" class="btn btn-info btn-circle"><i class="glyphicon glyphicon-asterisk"></i></button>
-
-								<h3>Answer 3</h3>
-						
-								<button type="button" class="btn btn-info btn-circle"><i class="glyphicon glyphicon-asterisk"></i></button>
-
-								<h3>Answer 4</h3>
+						<div id="questionDiv"></div>
+						<div id="choicesDiv"></div>
+						<button type="button" class="btn btn-info btn-circle"><i class="glyphicon glyphicon-asterisk"></i></button>
+			
 					</div>
 				</div>
 
@@ -88,11 +72,11 @@
 
 				<h2 class="allDone">All Done!</h2>
 
-				<h2>Correct Answers:</h2>
+				<h2 id="correct">Correct Answers:</h2>
 
-				<h2>Incorrect Answers:</h2>
+				<h2 id="incorrect">Incorrect Answers:</h2>
 
-				<h2>Unanswered:</h2>
+				<h2 id="unanswered">Unanswered:</h2>
 
 				<div class="row">
 					<div class="col-md-12">
