@@ -33,10 +33,6 @@ $(function () {
 		question: "What molecule is increased in the synapse when you are sleepy?",
 		choices: ["Caffeine", "Adenosine", "Glutamate", "Dopamine"],
 		validAnswer: 1
-	}, {
-		question: "What is scientifically proven to help prevent or help resistance to stress?",
-		choices: ["Placebo", "Exercise", "Midnight snacks", "Medication"],
-		validAnswer: 1
 	}
 
 	];
@@ -102,8 +98,8 @@ $(function () {
 			var newDiv = $("<div>");
 			newDiv.text(choicesArr[i]);
 			$("#choicesDiv").append(newDiv);
-			// var button = $("<button>");
-			// button.addclass(".btn-circle");
+			var button = $("<button>");
+			
 
 
 		}
