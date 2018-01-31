@@ -9,7 +9,7 @@ $(function () {
 	//varialbe for unansweredQuestion
 	var unAnswer = 0;
 	//variable for counter
-	var counter = 11;
+	var counter = 50;
 	//need variable for intervalID
 	var intervalId;
 	//need a variable for userGuess
@@ -25,7 +25,7 @@ $(function () {
 		choices: ["Digestive System", "Immune System", "Reproductive System", "All of the above"],
 		validAnswer: 3
 	}, {
-		question: "What is NOT a neurotransmitter",
+		question: "What is NOT a neurotransmitter?",
 		choices: ["Serotonin", "Nitric Oxide", "Insula", "Acetylcholine"],
 		validAnswer: 2
 	}, {
@@ -49,12 +49,9 @@ $(function () {
 		// set unansweredQuestion to 0
 		unAnswer = 0;
 		// set counter to 120 seconds
-		counter = 11;
+		counter = 50;
 		//clear intervalId
 		clearInterval(intervalId);
-		$("#questionDiv").empty();
-		$("#choicesDiv").empty();
-		//reset trivia
 	} // END RESET FUNCTION
 
 	reset();
@@ -91,7 +88,6 @@ $(function () {
 
 
 	function displayTrivia(questionCounter) {
-		console.log("question counter: " + questionCounter);
 		if(questionCounter >= scienceQuestion.length) {
 			clearInterval(questionDisplayInterval);
 		} else {
@@ -115,6 +111,14 @@ $(function () {
 		questionCounter++;
 	}
 
+	var questionDisplayInterval = setInterval(function () {
+			$("#questionDiv").empty();
+			$("#choicesDiv").empty();
+			questionCounter++;
+			displayTrivia(questionCounter);
+		
+		}, 10000, questionCounter);
+
 	//start at start screen:
 
 	$(".gameScreen").hide();
@@ -136,46 +140,23 @@ $(function () {
 		//put questions on page
 		displayTrivia(questionCounter);
 
-		// var questionDisplayInterval = setInterval(displayTrivia, 5000, questionCounter);
-		var questionDisplayInterval = setInterval(function () {
-			console.log("question counter: " + questionCounter);
-			$("#questionDiv").empty();
-			$("#choicesDiv").empty();
-			questionCounter++;
-			if(questionCounter >= scienceQuestion.length) {
-				clearInterval(questionDisplayInterval);
-			} else {
-				var newDiv = $("<div>");
-				newDiv.append(scienceQuestion[questionCounter].question);
-				$("#questionDiv").append(newDiv);
-
-				var choicesArr = scienceQuestion[questionCounter].choices;
-				for (var i = 0; i < choicesArr.length; i++) {
-					var newDiv = $("<div>");
-					newDiv.text(choicesArr[i]);
-					$("#choicesDiv").append(newDiv);
-					var button = $("<button>");
-					button.attr("data-value", i);
-					button.text("Select Answer");
-					newDiv.append(button);
-				}
-			}
-		}, 5000, questionCounter);
+		questionDisplayInterval();
 		}); // END START BUTTON
 
 		//Click an answer button
 	$(document).on("click", "button", function() {
 			userPick = $(this).data("value");
 			scienceQuestion[0].validAnswer;
-			console.log(userPick);
 
 		if (userPick === scienceQuestion[0].validAnswer) {
 			correctAnswer++;
-			console.log("correctAnswer: " + correctAnswer);
+			update();
 		} else if (userPick != scienceQuestion[0].validAnswer) {
 			incorrectAnswer++;
+			update();
 		} else if (userPick == "") {
 			unAnswer++;
+			update();
 		}
 
 
@@ -189,6 +170,9 @@ $(function () {
 		$(".stopScreen").hide();
 		//call reset
 		reset();
+		displayTrivia(questionCounter);
+		questionDisplayInterval();
+	
 
 	}); // END START OVER BUTTON
 
