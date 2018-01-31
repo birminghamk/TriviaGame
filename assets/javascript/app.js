@@ -13,6 +13,9 @@ $(function () {
 	//need variable for intervalID
 	var intervalId;
 	//need a variable for userGuess
+	var questionCounter = 0;
+
+
 	var scienceQuestion = [ {
 		question: "What is the corpus callosum?",
 		choices: ["A sweet word with no function", "A type of snail", "A receptor", "It connects the left and right brain hemispheres"],
@@ -64,7 +67,7 @@ $(function () {
 		$("#incorrect").html("Incorrect Answers: " + incorrectAnswer + "/5");
 		//displays unanswered questions
 		$("#unanswered").html("Unanswered Questions: " + unAnswer + "/5");
-		//create loop to display questions 
+		//create loop to display questions
 
 	} // END UPDATE FUNCTION
 
@@ -86,30 +89,36 @@ $(function () {
 		$(".timeTracker").html("Time Remaining: " + counter + " seconds");
 	}
 
-	function displayTrivia() {
 
-		var newDiv = $("<div>");
-		newDiv.append(scienceQuestion[0].question);
-		$("#questionDiv").append(newDiv);
-
-		var choicesArr = scienceQuestion[0].choices;
-
-		for (var i = 0; i < choicesArr.length; i++) {
+	function displayTrivia(questionCounter) {
+		console.log("question counter: " + questionCounter);
+		if(questionCounter >= scienceQuestion.length) {
+			clearInterval(questionDisplayInterval);
+		} else {
 			var newDiv = $("<div>");
-			newDiv.text(choicesArr[i]);
-			$("#choicesDiv").append(newDiv);
-			var button = $("<button>");
-			
+			newDiv.append(scienceQuestion[questionCounter].question);
+			$("#questionDiv").append(newDiv);
+
+			var choicesArr = scienceQuestion[questionCounter].choices;
+			for (var i = 0; i < choicesArr.length; i++) {
+				var newDiv = $("<div>");
+				newDiv.text(choicesArr[i]);
+				$("#choicesDiv").append(newDiv);
+				var button = $("<button>");
+				button.attr("data-value", i);
+				button.text("Select Answer");
+				newDiv.append(button);
+			}
 
 
 		}
-		
+		questionCounter++;
 	}
 
 	//start at start screen:
 
 	$(".gameScreen").hide();
-	
+
 	$(".stopScreen").hide();
 
 	$(".startScreen").show();
@@ -125,35 +134,62 @@ $(function () {
 		// counter decreases by one
 		decrement();
 		//put questions on page
-		displayTrivia();
+		displayTrivia(questionCounter);
 
+		// var questionDisplayInterval = setInterval(displayTrivia, 5000, questionCounter);
+		var questionDisplayInterval = setInterval(function () {
+			console.log("question counter: " + questionCounter);
+			$("#questionDiv").empty();
+			$("#choicesDiv").empty();
+			questionCounter++;
+			if(questionCounter >= scienceQuestion.length) {
+				clearInterval(questionDisplayInterval);
+			} else {
+				var newDiv = $("<div>");
+				newDiv.append(scienceQuestion[questionCounter].question);
+				$("#questionDiv").append(newDiv);
+
+				var choicesArr = scienceQuestion[questionCounter].choices;
+				for (var i = 0; i < choicesArr.length; i++) {
+					var newDiv = $("<div>");
+					newDiv.text(choicesArr[i]);
+					$("#choicesDiv").append(newDiv);
+					var button = $("<button>");
+					button.attr("data-value", i);
+					button.text("Select Answer");
+					newDiv.append(button);
+				}
+			}
+		}, 5000, questionCounter);
 		}); // END START BUTTON
 
 		//Click an answer button
-	$(".btn-circle").on("click", function() {
-			userPick = $(this).data("id");
-			scienceQuestin[0].validAnswer;
+	$(document).on("click", "button", function() {
+			userPick = $(this).data("value");
+			scienceQuestion[0].validAnswer;
+			console.log(userPick);
 
 		if (userPick === scienceQuestion[0].validAnswer) {
 			correctAnswer++;
+			console.log("correctAnswer: " + correctAnswer);
 		} else if (userPick != scienceQuestion[0].validAnswer) {
 			incorrectAnswer++;
 		} else if (userPick == "") {
 			unAnswer++;
 		}
-				
+
 
 		}); // END CLICK CIRCLE BUTTON
 
 	//click start over button
-	$(".start-over").on("click", function (){ 
+	$(".start-over").on("click", function (){
 		//return to start screen
 		$(".startScreen").show();
 		$(".gameScreen").hide();
 		$(".stopScreen").hide();
 		//call reset
 		reset();
-			
+
 	}); // END START OVER BUTTON
 
 
