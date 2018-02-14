@@ -9,7 +9,7 @@ $(function () {
 	//varialbe for unansweredQuestion
 	var unAnswer = 0;
 	//variable for counter
-	var counter = 50;
+	var counter = 11;
 	//need variable for intervalID
 	var intervalId;
 	//need a variable for userGuess
@@ -49,7 +49,7 @@ $(function () {
 		// set unansweredQuestion to 0
 		unAnswer = 0;
 		// set counter to 120 seconds
-		counter = 50;
+		counter = 11;
 		//clear intervalId
 		clearInterval(intervalId);
 	} // END RESET FUNCTION
@@ -102,6 +102,7 @@ $(function () {
 				$("#choicesDiv").append(newDiv);
 				var button = $("<button>");
 				button.attr("data-value", i);
+				button.addClass("select btn-primary");
 				button.text("Select Answer");
 				newDiv.append(button);
 			}
@@ -119,6 +120,8 @@ $(function () {
 		
 		}, 10000, questionCounter);
 
+	var newquestion = questionDisplayInterval;
+
 	//start at start screen:
 
 	$(".gameScreen").hide();
@@ -128,7 +131,7 @@ $(function () {
 	$(".startScreen").show();
 
 	//Click Start Button:
-	$(".start").on("click", function() {
+	$("#start").on("click", function() {
 		//move to game screen
 		$(".gameScreen").show();
 		//remove start button
@@ -138,40 +141,54 @@ $(function () {
 		// counter decreases by one
 		decrement();
 		//put questions on page
-		displayTrivia(questionCounter);
-
-		questionDisplayInterval();
+		displayTrivia(questionCounter, questionDisplayInterval);
 		}); // END START BUTTON
 
+
 		//Click an answer button
-	$(document).on("click", "button", function() {
+	$(document).on("click", ".select", function() {
 			userPick = $(this).data("value");
 			scienceQuestion[0].validAnswer;
 
-		if (userPick === scienceQuestion[0].validAnswer) {
+			clearInterval(questionDisplayInterval);
+
+			$("#questionDiv").empty();
+			$("#choicesDiv").empty();
+			questionCounter++;
+			displayTrivia(questionCounter);
+			counter = 11;
+
+			questionDisplayInterval = setInterval(function () {
+				$("#questionDiv").empty();
+				$("#choicesDiv").empty();
+				questionCounter++;
+				displayTrivia(questionCounter);
+				
+			
+			}, 10000, questionCounter);
+
+		if (userPick === scienceQuestion[questionCounter].validAnswer) {
 			correctAnswer++;
 			update();
-		} else if (userPick != scienceQuestion[0].validAnswer) {
+		} else if (userPick != scienceQuestion[questionCounter].validAnswer) {
 			incorrectAnswer++;
 			update();
-		} else if (userPick == "") {
+		} else if (userPick != "null") {
 			unAnswer++;
 			update();
 		}
 
-
-		}); // END CLICK CIRCLE BUTTON
+	}); // END CLICK CIRCLE BUTTON
 
 	//click start over button
-	$(".start-over").on("click", function (){
+	$(document).on("click",".start-over", function (){
 		//return to start screen
 		$(".startScreen").show();
 		$(".gameScreen").hide();
 		$(".stopScreen").hide();
 		//call reset
 		reset();
-		displayTrivia(questionCounter);
-		questionDisplayInterval();
+		
 	
 
 	}); // END START OVER BUTTON

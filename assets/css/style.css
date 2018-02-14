@@ -9,6 +9,10 @@ body {
 * {
 	box-sizing: content-box;
 }
+.container {
+	background-color: white;
+	width: 50%;
+}
 /*START SCREEN*/
 .main-container {
 	position: absolute;
@@ -17,19 +21,28 @@ body {
 	margin: auto;
 	margin-left: 200px;
 	margin-right: 200px;
-	background-color: yellow;
+	background-color: #ffff00;
+	box-shadow: 5px 5px white;
 	padding-bottom: 200px;
+	border: 2px 2px yellow;
 }
-
-.start {
+#start {
 	font-size: 40px;
 	margin-top: 100px;
 	color: white;
 	padding: 0px 50px;
 }
+.funFact {
+	position: absolute;
+	top: 200px;
+	font-weight: bold;
+}
 /*GAME SCREEN*/
 h1 {
 	color: lightgreen;
+	text-shadow: 1px 1px white;
+	text-decoration: underline;
+	font-size: 50px;
 }
 h3 {
 	font-size: 16px;
@@ -48,8 +61,19 @@ h3 {
 #questionDiv {
 	font-weight: bold;
 }
+.select {
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
 /*END SCREEN*/
 .start-over {
 	margin-bottom: 10px;
 	color: white;
 }
+.timeTracker {
+	color: white;
+	text-shadow: 1px 1px black;
+}
+
+
+
