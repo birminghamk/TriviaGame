@@ -4,10 +4,14 @@ body {
 	overflow: auto;
 	text-align: center;
 	/*width: 100%;*/
-	background: url("https://www.conncoll.edu/ccacad/zimmer/GFP-ww/images/brainbow1.jpg");
+	background: url(../images/brainbow.jpg);
+	background-repeat: round;
 }
 * {
 	box-sizing: content-box;
+}
+.gameScreen, .stopScreen {
+	display: none;
 }
 .container {
 	background-color: white;
@@ -36,6 +40,8 @@ body {
 	position: absolute;
 	top: 200px;
 	font-weight: bold;
+	color: darkblue;
+	text-shadow: 1px 1px lightblue;
 }
 /*GAME SCREEN*/
 h1 {

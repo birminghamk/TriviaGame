@@ -1,134 +1,38 @@
-// On page load:
 $(function () {
-	//variable for userPick
-	var userPick;
-	//variable for correctAnswer
-	var correctAnswer = 0;
-	//variable for incorrectAnswer
-	var incorrectAnswer = 0;
-	//varialbe for unansweredQuestion
-	var unAnswer = 0;
-	//variable for counter
-	var counter = 11;
-	//need variable for intervalID
-	var intervalId;
-	//need a variable for userGuess
-	var questionCounter = 0;
+	//correct answers
+	var correctCount = 0;
+	//incorrect answers
+	var incorrectCount = 0;
+	//unanswered questions
+	var skippedCount = 0;
+	//counter for questions
+	var questionCounter = -1;
+	// variable for counter
+	var timeRemaining = 10;
+	// switch to new question
+	var questionTimer;
 
-
-	var scienceQuestion = [ {
-		question: "What is the corpus callosum?",
+	var questions = [{
+		text: "What is the corpus callosum?",
 		choices: ["A sweet word with no function", "A type of snail", "A receptor", "It connects the left and right brain hemispheres"],
-		validAnswer: 3
+		solution: 3
 	}, {
-		question: "What bodily system does the nervous system directly interact with?",
+		text: "What bodily system does the nervous system directly interact with?",
 		choices: ["Digestive System", "Immune System", "Reproductive System", "All of the above"],
-		validAnswer: 3
+		solution: 3
 	}, {
-		question: "What is NOT a neurotransmitter?",
+		text: "What is NOT a neurotransmitter?",
 		choices: ["Serotonin", "Nitric Oxide", "Insula", "Acetylcholine"],
-		validAnswer: 2
+		solution: 2
 	}, {
-		question: "What drug is responsible for interacting with endocannabinoids?",
+		text: "What drug is responsible for interacting with endocannabinoids?",
 		choices: ["Marijuana", "Heroin", "LSD", "Cocaine"],
-		validAnswer: 0
+		solution: 0
 	}, {
-		question: "What molecule is increased in the synapse when you are sleepy?",
+		text: "What molecule is increased in the synapse when you are sleepy?",
 		choices: ["Caffeine", "Adenosine", "Glutamate", "Dopamine"],
-		validAnswer: 1
-	}
-
-	];
-
-	//reset function
-	function reset() {
-		// set correctAnswers to 0
-		correctAnswer = 0;
-		// set incorrectAnswers to 0
-		incorrectAnswer = 0;
-		// set unansweredQuestion to 0
-		unAnswer = 0;
-		// set counter to 120 seconds
-		counter = 11;
-		//clear intervalId
-		clearInterval(intervalId);
-	} // END RESET FUNCTION
-
-	reset();
-
-	//update function
-	function update() {
-		//displays correct answers
-		$("#correct").html("Correct Answers: " + correctAnswer + "/5");
-		//displays incorrect answers
-		$("#incorrect").html("Incorrect Answers: " + incorrectAnswer + "/5");
-		//displays unanswered questions
-		$("#unanswered").html("Unanswered Questions: " + unAnswer + "/5");
-		//create loop to display questions
-
-	} // END UPDATE FUNCTION
-
-	update();
-
-	function run() {
-
-		clearInterval(intervalId);
-		intervalId = setInterval(decrement, 1000);
-	}
-
-	function decrement () {
-		counter--;
-		if (counter <= 0) {
-			clearInterval(intervalId);
-			$(".stopScreen").show();
-			$(".gameScreen").hide();
-		}
-		$(".timeTracker").html("Time Remaining: " + counter + " seconds");
-	}
-
-
-	function displayTrivia(questionCounter) {
-		if(questionCounter >= scienceQuestion.length) {
-			clearInterval(questionDisplayInterval);
-		} else {
-			var newDiv = $("<div>");
-			newDiv.append(scienceQuestion[questionCounter].question);
-			$("#questionDiv").append(newDiv);
-
-			var choicesArr = scienceQuestion[questionCounter].choices;
-			for (var i = 0; i < choicesArr.length; i++) {
-				var newDiv = $("<div>");
-				newDiv.text(choicesArr[i]);
-				$("#choicesDiv").append(newDiv);
-				var button = $("<button>");
-				button.attr("data-value", i);
-				button.addClass("select btn-primary");
-				button.text("Select Answer");
-				newDiv.append(button);
-			}
-
-
-		}
-		questionCounter++;
-	}
-
-	var questionDisplayInterval = setInterval(function () {
-			$("#questionDiv").empty();
-			$("#choicesDiv").empty();
-			questionCounter++;
-			displayTrivia(questionCounter);
-		
-		}, 10000, questionCounter);
-
-	var newquestion = questionDisplayInterval;
-
-	//start at start screen:
-
-	$(".gameScreen").hide();
-
-	$(".stopScreen").hide();
-
-	$(".startScreen").show();
+		solution: 1
+	}];
 
 	//Click Start Button:
 	$("#start").on("click", function() {
@@ -136,62 +40,91 @@ $(function () {
 		$(".gameScreen").show();
 		//remove start button
 		$(".startScreen").hide();
-		//counter starts
-		run();
-		// counter decreases by one
-		decrement();
+		$(".stopScreen").hide();
 		//put questions on page
-		displayTrivia(questionCounter, questionDisplayInterval);
-		}); // END START BUTTON
-
-
-		//Click an answer button
-	$(document).on("click", ".select", function() {
-			userPick = $(this).data("value");
-			scienceQuestion[0].validAnswer;
-
-			clearInterval(questionDisplayInterval);
-
-			$("#questionDiv").empty();
-			$("#choicesDiv").empty();
-			questionCounter++;
-			displayTrivia(questionCounter);
-			counter = 11;
-
-			questionDisplayInterval = setInterval(function () {
-				$("#questionDiv").empty();
-				$("#choicesDiv").empty();
-				questionCounter++;
-				displayTrivia(questionCounter);
-				
-			
-			}, 10000, questionCounter);
-
-		if (userPick === scienceQuestion[questionCounter].validAnswer) {
-			correctAnswer++;
-			update();
-		} else if (userPick != scienceQuestion[questionCounter].validAnswer) {
-			incorrectAnswer++;
-			update();
-		} else if (userPick != "null") {
-			unAnswer++;
-			update();
-		}
-
-	}); // END CLICK CIRCLE BUTTON
+		newQuestion();
+	});
 
 	//click start over button
 	$(document).on("click",".start-over", function (){
-		//return to start screen
-		$(".startScreen").show();
-		$(".gameScreen").hide();
-		$(".stopScreen").hide();
-		//call reset
-		reset();
+		replayGame();
+	});
+
+	//Click an answer button
+	$(document).on("click", ".select", function() {
+		if ($(this).data("value") === questions[questionCounter].solution) {
+			correctCount++;
+		} else  {
+			incorrectCount++;
+		}
+		newQuestion();
+	});
+
+	function newQuestion() {
+		questionCounter++;
+
+		$("#questionDiv").empty();
+		$("#choicesDiv").empty();
 		
-	
+		$(".timeTracker").empty();
+		if (questionCounter < questions.length) {
+			$(".timeTracker").html("Time Remaining:" + timeRemaining + "seconds");
 
-	}); // END START OVER BUTTON
+			questionTimer = setInterval(function () {
+				timeRemaining--;
+				if (timeRemaining == 0) {
+					skippedCount++;
+					newQuestion();
+					clearInterval(questionTimer);
+				}
+				$(".timeTracker").html("Time Remaining: " + timeRemaining + " seconds");
+			}, 1000, questionCounter)
+			displayQuestion(questions[questionCounter]);
+			timeRemaining = 10;
+		} else {
+			finishGame();
+		}
+	}
 
+	function displayQuestion (question) {
+		var newDiv = $("<div>");
+		newDiv.append(question.text);
+		$("#questionDiv").append(newDiv);
 
-}); // END PAGE LOAD
+		var choicesArr = question.choices;
+		for (var i = 0; i < choicesArr.length; i++) {
+			var newDiv = $("<div>");
+			newDiv.text(choicesArr[i]);
+			$("#choicesDiv").append(newDiv);
+			var button = $("<button>");
+			button.attr("data-value", i);
+			button.addClass("select btn-primary");
+			button.text("Select Answer");
+			newDiv.append(button);
+		}
+	}
+
+	function finishGame() {
+		//displays correct answers
+		$("#correct").html("Correct Answers: " + correctCount + "/5");
+		//displays incorrect answers
+		$("#incorrect").html("Incorrect Answers: " + incorrectCount + "/5");
+		//displays unanswered questions
+		$("#unanswered").html("Unanswered Questions: " + skippedCount + "/5");
+		$(".stopScreen").show();
+		$(".gameScreen").hide();
+	}
+
+	//reset function
+	function replayGame() {
+		//refreshes page, returns to start screen
+		location.reload();
+		// set correctAnswers to 0
+		correctCount = 0;
+		// set incorrectAnswers to 0
+		incorrectCount = 0;
+		// set unansweredQuestion to 0
+		skippedCount = 0;
+	} 
+
+}); 
