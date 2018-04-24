@@ -1,6 +1,6 @@
 # The Brain Trivia Game
 
-![Demo]('https://user-images.githubusercontent.com/30732917/39202880-86c90e42-47b0-11e8-886b-37863992c170.gif')
+![Demo](https://user-images.githubusercontent.com/30732917/39202880-86c90e42-47b0-11e8-886b-37863992c170.gif)
 
 ## How It Works
 
