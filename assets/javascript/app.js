@@ -32,6 +32,26 @@ $(function () {
 		text: "What molecule is increased in the synapse when you are sleepy?",
 		choices: ["Caffeine", "Adenosine", "Glutamate", "Dopamine"],
 		solution: 1
+	}, {
+		text: "What are considered parts of a neuron?",
+		choices: ["axon hillock", "dendrite", "synapse", "All of the above", "A and B"],
+		solution: 4
+	}, {
+		text: "What region in the brain is associated with vision?",
+		choices: ["Frontal Lobe", "Occipital Lobe", "Parietal Lobe", "Temporal Lobe"],
+		solution: 1
+	}, {
+		text: "What consists of the central nervous system?",
+		choices: ["Brain and Optic Nerve", "Your head", "Brain and spinal cord", "Brain"],
+		solution: 2
+	}, {
+		text: "Which neuropeptide is associated with hunger?",
+		choices: ["Neuropeptide Y", "Vasopressin", "Glutamate", "Dopamine"],
+		solution: 0
+	}, {
+		text: "What is the periaqueductal gray associated with regulating?",
+		choices: ["Hunger", "Sleep", "Reward", "Pain"],
+		solution: 3
 	}];
 
 	//Click Start Button:
@@ -57,7 +77,7 @@ $(function () {
 			console.log("TIME UP");
 			timeUp();
 		}
-		
+
 		$(".timeTracker").html("Time Remaining: " + timeRemaining + " seconds");
 	}
 
@@ -115,11 +135,11 @@ $(function () {
 
 	function finishGame() {
 		//displays correct answers
-		$("#correct").html("Correct Answers: " + correctCount + "/5");
+		$("#correct").html("Correct Answers: " + correctCount + "/10");
 		//displays incorrect answers
-		$("#incorrect").html("Incorrect Answers: " + incorrectCount + "/5");
+		$("#incorrect").html("Incorrect Answers: " + incorrectCount + "/10");
 		//displays unanswered questions
-		$("#unanswered").html("Unanswered Questions: " + skippedCount + "/5");
+		$("#unanswered").html("Unanswered Questions: " + skippedCount + "/10");
 		$(".stopScreen").show();
 		$(".gameScreen").hide();
 	}
