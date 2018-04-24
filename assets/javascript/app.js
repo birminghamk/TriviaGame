@@ -50,6 +50,40 @@ $(function () {
 		replayGame();
 	});
 
+	function countdown () {
+		timeRemaining--;
+
+		if (timeRemaining === 0) {
+			console.log("TIME UP");
+			timeUp();
+		}
+		
+		$(".timeTracker").html("Time Remaining: " + timeRemaining + " seconds");
+	}
+
+	function timeUp () {
+		skippedCount++;
+		newQuestion();
+	}
+
+	function newQuestion() {
+		clearInterval(questionTimer);
+		questionCounter++;
+
+		$("#questionDiv").empty();
+		$("#choicesDiv").empty();
+		$(".timeTracker").empty();
+
+		if (questionCounter < questions.length) {
+			questionTimer = setInterval(countdown, 1000);
+			displayQuestion(questions[questionCounter]);
+			timeRemaining = 10;
+			$(".timeTracker").html("Time Remaining: " + timeRemaining + " seconds");
+		} else {
+			finishGame();
+		}
+	}
+
 	//Click an answer button
 	$(document).on("click", ".select", function() {
 		if ($(this).data("value") === questions[questionCounter].solution) {
@@ -60,38 +94,13 @@ $(function () {
 		newQuestion();
 	});
 
-	function newQuestion() {
-		questionCounter++;
-
-		$("#questionDiv").empty();
-		$("#choicesDiv").empty();
-		
-		$(".timeTracker").empty();
-		if (questionCounter < questions.length) {
-			$(".timeTracker").html("Time Remaining:" + timeRemaining + "seconds");
-
-			questionTimer = setInterval(function () {
-				timeRemaining--;
-				if (timeRemaining == 0) {
-					skippedCount++;
-					newQuestion();
-					clearInterval(questionTimer);
-				}
-				$(".timeTracker").html("Time Remaining: " + timeRemaining + " seconds");
-			}, 1000, questionCounter)
-			displayQuestion(questions[questionCounter]);
-			timeRemaining = 10;
-		} else {
-			finishGame();
-		}
-	}
-
 	function displayQuestion (question) {
 		var newDiv = $("<div>");
 		newDiv.append(question.text);
 		$("#questionDiv").append(newDiv);
 
 		var choicesArr = question.choices;
+
 		for (var i = 0; i < choicesArr.length; i++) {
 			var newDiv = $("<div>");
 			newDiv.text(choicesArr[i]);
