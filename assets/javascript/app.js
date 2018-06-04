@@ -55,7 +55,7 @@ $(function () {
 	}];
 
 	//Click Start Button:
-	$("#start").on("click", function() {
+	$("#startBtn").on("click", function() {
 		//move to game screen
 		$(".gameScreen").show();
 		//remove start button
